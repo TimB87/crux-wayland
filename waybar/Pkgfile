@@ -1,0 +1,16 @@
+# Description: wayland bar for wlroots based compositors
+# URL: https://github.com/Alexays/Waybar
+# Maintainer: Tim Biermann, tbier at posteo dot de
+# Depends on: git gtkmm3 jsoncpp libinput wayland-protocols
+
+name=waybar
+version=0.9.2
+release=1
+source=(https://github.com/Alexays/Waybar/archive/$version/$name-$version.tar.gz)
+
+build() {
+  cd Waybar-$version
+  meson build --prefix=/usr
+  ninja -C build
+  DESTDIR=$PKG ninja -C build install
+}

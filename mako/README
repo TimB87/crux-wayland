@@ -1,0 +1,2 @@
+This needs elogind or systemd... there is no notification daemon that doesn't
+depend on their dbus apis :/

@@ -1,0 +1,17 @@
+# Description: Wayland C++ bindings
+# URL: https://github.com/NilsBrause/waylandpp
+# Maintainer: Tim Biermann, tbier at posteo dot de
+# Depends on: wayland-protocols pugixml wayland-egl
+
+name=waylandpp
+version=0.2.7
+release=1
+source=(https://github.com/NilsBrause/waylandpp/archive/$version/$name-$version.zip)
+
+build() {
+  cd $name-$version
+  mkdir build && cd build
+  cmake -DCMAKE_INSTALL_PREFIX="/usr" -DCMAKE_INSTALL_LIBDIR="lib" ..
+  make
+  make DESTDIR=$PKG install
+}

@@ -1,0 +1,64 @@
+drwxr-xr-x	root/root	usr/
+drwxr-xr-x	root/root	usr/bin/
+-rwxr-xr-x	root/root	usr/bin/wayland-scanner++
+drwxr-xr-x	root/root	usr/include/
+-rw-r--r--	root/root	usr/include/wayland-client-protocol-extra.hpp
+-rw-r--r--	root/root	usr/include/wayland-client-protocol.hpp
+-rw-r--r--	root/root	usr/include/wayland-client.hpp
+-rw-r--r--	root/root	usr/include/wayland-cursor.hpp
+-rw-r--r--	root/root	usr/include/wayland-egl.hpp
+-rw-r--r--	root/root	usr/include/wayland-util.hpp
+-rw-r--r--	root/root	usr/include/wayland-version.hpp
+drwxr-xr-x	root/root	usr/lib/
+drwxr-xr-x	root/root	usr/lib/cmake/
+drwxr-xr-x	root/root	usr/lib/cmake/waylandpp/
+-rw-r--r--	root/root	usr/lib/cmake/waylandpp/waylandpp-config-version.cmake
+-rw-r--r--	root/root	usr/lib/cmake/waylandpp/waylandpp-config.cmake
+-rw-r--r--	root/root	usr/lib/cmake/waylandpp/waylandpp-targets-noconfig.cmake
+-rw-r--r--	root/root	usr/lib/cmake/waylandpp/waylandpp-targets.cmake
+lrwxrwxrwx	root/root	usr/lib/libwayland-client++.so -> libwayland-client++.so.0
+lrwxrwxrwx	root/root	usr/lib/libwayland-client++.so.0 -> libwayland-client++.so.0.2.7
+-rwxr-xr-x	root/root	usr/lib/libwayland-client++.so.0.2.7
+lrwxrwxrwx	root/root	usr/lib/libwayland-client-extra++.so -> libwayland-client-extra++.so.0
+lrwxrwxrwx	root/root	usr/lib/libwayland-client-extra++.so.0 -> libwayland-client-extra++.so.0.2.7
+-rwxr-xr-x	root/root	usr/lib/libwayland-client-extra++.so.0.2.7
+lrwxrwxrwx	root/root	usr/lib/libwayland-cursor++.so -> libwayland-cursor++.so.0
+lrwxrwxrwx	root/root	usr/lib/libwayland-cursor++.so.0 -> libwayland-cursor++.so.0.2.7
+-rwxr-xr-x	root/root	usr/lib/libwayland-cursor++.so.0.2.7
+lrwxrwxrwx	root/root	usr/lib/libwayland-egl++.so -> libwayland-egl++.so.0
+lrwxrwxrwx	root/root	usr/lib/libwayland-egl++.so.0 -> libwayland-egl++.so.0.2.7
+-rwxr-xr-x	root/root	usr/lib/libwayland-egl++.so.0.2.7
+drwxr-xr-x	root/root	usr/lib/pkgconfig/
+-rw-r--r--	root/root	usr/lib/pkgconfig/wayland-client++.pc
+-rw-r--r--	root/root	usr/lib/pkgconfig/wayland-client-extra++.pc
+-rw-r--r--	root/root	usr/lib/pkgconfig/wayland-cursor++.pc
+-rw-r--r--	root/root	usr/lib/pkgconfig/wayland-egl++.pc
+-rw-r--r--	root/root	usr/lib/pkgconfig/wayland-scanner++.pc
+drwxr-xr-x	root/root	usr/share/
+drwxr-xr-x	root/root	usr/share/waylandpp/
+drwxr-xr-x	root/root	usr/share/waylandpp/protocols/
+-rw-r--r--	root/root	usr/share/waylandpp/protocols/fullscreen-shell-unstable-v1.xml
+-rw-r--r--	root/root	usr/share/waylandpp/protocols/idle-inhibit-unstable-v1.xml
+-rw-r--r--	root/root	usr/share/waylandpp/protocols/input-method-unstable-v1.xml
+-rw-r--r--	root/root	usr/share/waylandpp/protocols/input-timestamps-unstable-v1.xml
+-rw-r--r--	root/root	usr/share/waylandpp/protocols/keyboard-shortcuts-inhibit-unstable-v1.xml
+-rw-r--r--	root/root	usr/share/waylandpp/protocols/linux-dmabuf-unstable-v1.xml
+-rw-r--r--	root/root	usr/share/waylandpp/protocols/linux-explicit-synchronization-unstable-v1.xml
+-rw-r--r--	root/root	usr/share/waylandpp/protocols/pointer-constraints-unstable-v1.xml
+-rw-r--r--	root/root	usr/share/waylandpp/protocols/pointer-gestures-unstable-v1.xml
+-rw-r--r--	root/root	usr/share/waylandpp/protocols/presentation-time.xml
+-rw-r--r--	root/root	usr/share/waylandpp/protocols/primary-selection-unstable-v1.xml
+-rw-r--r--	root/root	usr/share/waylandpp/protocols/relative-pointer-unstable-v1.xml
+-rw-r--r--	root/root	usr/share/waylandpp/protocols/tablet-unstable-v1.xml
+-rw-r--r--	root/root	usr/share/waylandpp/protocols/tablet-unstable-v2.xml
+-rw-r--r--	root/root	usr/share/waylandpp/protocols/text-input-unstable-v1.xml
+-rw-r--r--	root/root	usr/share/waylandpp/protocols/text-input-unstable-v3.xml
+-rw-r--r--	root/root	usr/share/waylandpp/protocols/viewporter.xml
+-rw-r--r--	root/root	usr/share/waylandpp/protocols/wayland.xml
+-rw-r--r--	root/root	usr/share/waylandpp/protocols/xdg-decoration-unstable-v1.xml
+-rw-r--r--	root/root	usr/share/waylandpp/protocols/xdg-foreign-unstable-v1.xml
+-rw-r--r--	root/root	usr/share/waylandpp/protocols/xdg-foreign-unstable-v2.xml
+-rw-r--r--	root/root	usr/share/waylandpp/protocols/xdg-output-unstable-v1.xml
+-rw-r--r--	root/root	usr/share/waylandpp/protocols/xdg-shell-unstable-v6.xml
+-rw-r--r--	root/root	usr/share/waylandpp/protocols/xdg-shell.xml
+-rw-r--r--	root/root	usr/share/waylandpp/protocols/xwayland-keyboard-grab-unstable-v1.xml

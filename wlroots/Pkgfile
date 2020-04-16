@@ -1,0 +1,27 @@
+# Description: A modular Wayland compositor library.
+# URL: https://github.com/swaywm/wlroots
+# Maintainer: Tim Biermann, tbier at posteo dot de
+# Depends on: libcap libinput libxkbcommon mesa3d wayland-protocols xorg-libpixman xorg-libxcomposite xorg-xcb-util-error xorg-xcb-util-image xorg-xcb-util-wm xorg-xinput
+
+name=wlroots
+version=0.10.1
+release=1
+source=(https://github.com/swaywm/wlroots/archive/$version/$name-$version.tar.gz)
+git=(https://github.com/swaywm/wlroots.git)
+
+build() {
+  cd $name-$version
+  #git clone $git
+  #cd $name
+  meson build --prefix=/usr \
+  --buildtype=plain \
+     -Dfreerdp=disabled \
+     -Dlibcap=enabled \
+     -Dxcb-errors=enabled \
+     -Dxcb-icccm=enabled \
+     -Dxcb-xkb=enabled \
+     -Dxwayland=enabled \
+     -Dx11-backend=enabled
+  ninja -C build
+  DESTDIR=$PKG ninja -C build install
+}

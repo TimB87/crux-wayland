@@ -1,0 +1,35 @@
+# Description: A multi-platform toolkit for creating graphical user interfaces
+# URL: https://www.gtk.org/
+# Maintainer: Tim Biermann, tbier at posteo dot de
+# Depends on: at-spi2-atk gdk-pixbuf libepoxy pango libxkbcommon
+# Optional: cups colord wayland
+
+name=gtk3
+version=3.24.18
+release=1
+source=(https://download.gnome.org/sources/gtk+/${version:0:4}/gtk+-$version.tar.xz)
+
+build () {
+  cd gtk+-$version
+
+  [[ -e '/usr/lib/pkgconfig/colord.pc' ]] || PKGMK_GTK3+=' -Dcolord=no'
+  [[ -e '/usr/lib/pkgconfig/wayland-server.pc' ]] || PKGMK_GTK3+=' -Dwayland_backend=false'
+
+  mkdir builddir ; cd builddir
+  CFLAGS+=" -DG_ENABLE_DEBUG -DG_DISABLE_CAST_CHECKS"
+  meson $PKGMK_GTK3 \
+    --prefix=/usr \
+    -D man=false \
+    -D broadway_backend=false \
+    -D gtk_doc=false \
+    -D examples=false \
+    -D tests=false \
+    -D installed_tests=false \
+    -D demos=false \
+    ..
+  ninja
+  DESTDIR=$PKG ninja install
+
+  rm -r $PKG/usr/share/{locale,gtk-3.0}
+  rm $PKG/usr/bin/gtk-update-icon-cache
+}

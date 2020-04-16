@@ -1,0 +1,24 @@
+# Description:
+# URL:
+# Maintainer: Tim Biermann, tbier at posteo dot de
+# Depends on: intltool libdrm wayland xorg-xrandr xorg-libxxf86vm
+
+name=redshift-wayland
+version=1.12
+release=1
+source=(https://github.com/CameronNemo/redshift/archive/wlroots-nemo.tar.gz)
+
+build() {
+  ls
+  cd redshift-wlroots-nemo
+  ./bootstrap
+  ./configure \
+    --prefix=/usr \
+    --enable-drm \
+    --enable-randr \
+    --enable-vidmode \
+    --enable-wayland
+  make
+  make DESTDIR=$PKG install
+  rm -fr $PKG/usr/share/locale
+}

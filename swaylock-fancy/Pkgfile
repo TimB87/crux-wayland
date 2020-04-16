@@ -1,0 +1,15 @@
+# Description: lock your screen with an actual, blurred screenshot
+# URL: https://github.com/Big-B/swaylock-fancy
+# Maintainer: Tim Biermann, tbier at posteo dot de
+# Depends on: meson wayland-protocol xorg-libxkbcommon cairo gdk-pixbuf wlroots imagemagick grim
+
+name=swaylock-fancy
+version=20020222
+release=1
+_commit=5cf977b12f372740aa7b7e5a607d583f93f1e028
+source=(https://github.com/Big-B/swaylock-fancy/archive/$_commit/$name-$version.tar.gz)
+
+build() {
+  cd $name-$_commit
+  DESTDIR=$PKG make install
+}

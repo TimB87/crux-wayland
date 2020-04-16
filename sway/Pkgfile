@@ -1,0 +1,22 @@
+# Description: An i3-compatible wayland compositor.
+# URL: https://swaywm.org/
+# Maintainer: Tim Biermann, tbier at posteo dot de
+# Depends on: graphite2 json-c pango wlroots
+
+name=sway
+version=1.4
+release=1
+source=(https://github.com/swaywm/sway/archive/$version/$name-$version.tar.gz)
+
+build() {
+  cd $name-$version
+  sed -i "s/branch \\\'@1@\\\'/CRUX/g" meson.build
+  meson build --prefix=/usr \
+    -Dwerror=false \
+    -Db_ndebug=true
+    # needs systemd or elogind..
+    #-Dtray=enabled \
+  ninja -C build
+  DESTDIR=$PKG ninja -C build install
+  chmod a+s $PKG/usr/bin/sway
+}

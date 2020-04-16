@@ -1,0 +1,18 @@
+# Description: Screen locker for Wayland
+# URL: https://github.com/swaywm/swaylock
+# Maintainer: Tim Biermann, tbier at posteo dot de
+# Depends on: meson wayland-protocol xorg-libxkbcommon cairo gdk-pixbuf wlroots
+
+name=swaylock
+version=1.5
+release=1
+source=(https://github.com/swaywm/swaylock/archive/$version/$name-$version.tar.gz)
+
+build() {
+  cd $name-$version
+  meson build --prefix=/usr \
+    --buildtype=plain
+  ninja -C build
+  DESTDIR=$PKG ninja -C build install
+  rm -r $PKG/usr/share/fish/
+}
