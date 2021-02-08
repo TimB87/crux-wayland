@@ -9,9 +9,9 @@ release=1
 source=(https://github.com/swaywm/swaybg/archive/$version/$name-$version.tar.gz)
 
 build() {
-  cd $name-$version
-  meson build --prefix=/usr \
-    -Dgdk-pixbuf=enabled
-  ninja -C build
-  DESTDIR=$PKG ninja -C build install
+  meson setup $name-$version build \
+    --prefix=/usr \
+    --buildtype=plain
+  meson compile -C build
+  DESTDIR=$PKG meson install -C build
 }

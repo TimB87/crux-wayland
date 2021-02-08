@@ -1,0 +1,10 @@
+--- GUIDialogProfileSettings.cpp-untouched	2020-01-11 19:55:25.270375308 +0100
++++ xbmc-leia_pi4_18.5-Leia/xbmc/profiles/dialogs/GUIDialogProfileSettings.cpp	2020-01-11 19:48:06.118046409 +0100
+@@ -32,6 +32,7 @@
+ #include "utils/URIUtils.h"
+ #include "utils/Variant.h"
+ #include "ServiceBroker.h"
++#include <cassert>
+ 
+ #define SETTING_PROFILE_NAME          "profile.name"
+ #define SETTING_PROFILE_IMAGE         "profile.image"

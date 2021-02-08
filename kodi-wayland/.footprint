@@ -1,0 +1,6 @@
+drwxr-xr-x	root/root	usr/
+drwxr-xr-x	root/root	usr/bin/
+lrwxrwxrwx	root/root	usr/bin/kodi-wayland -> /usr/lib/kodi/kodi-wayland
+drwxr-xr-x	root/root	usr/lib/
+drwxr-xr-x	root/root	usr/lib/kodi/
+-rwxr-xr-x	root/root	usr/lib/kodi/kodi-wayland

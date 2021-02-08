@@ -5,31 +5,31 @@
 # Optional: cups colord wayland
 
 name=gtk3
-version=3.24.18
-release=1
-source=(https://download.gnome.org/sources/gtk+/${version:0:4}/gtk+-$version.tar.xz)
+version=3.24.24
+release=2
+source=(https://download.gnome.org/sources/gtk+/${version:0:4}/gtk+-$version.tar.xz
+  gtk-register-3.sh gtk.immodules)
 
 build () {
-  cd gtk+-$version
-
   [[ -e '/usr/lib/pkgconfig/colord.pc' ]] || PKGMK_GTK3+=' -Dcolord=no'
-  [[ -e '/usr/lib/pkgconfig/wayland-server.pc' ]] || PKGMK_GTK3+=' -Dwayland_backend=false'
+  [[ -e '/usr/lib/pkgconfig/wayland-server.pc' ]] && PKGMK_GTK3+=' -D wayland_backend=true' || PKGMK_GTK3+=' -Dwayland_backend=false'
 
-  mkdir builddir ; cd builddir
   CFLAGS+=" -DG_ENABLE_DEBUG -DG_DISABLE_CAST_CHECKS"
-  meson $PKGMK_GTK3 \
+  meson setup gtk+-$version build $PKGMK_GTK3 \
     --prefix=/usr \
+    -D buildtype=plain \
     -D man=false \
-    -D broadway_backend=false \
+    -D broadway_backend=true \
     -D gtk_doc=false \
     -D examples=false \
     -D tests=false \
     -D installed_tests=false \
-    -D demos=false \
-    ..
-  ninja
-  DESTDIR=$PKG ninja install
+    -D demos=false
+  meson compile -C build
+  DESTDIR=$PKG meson install -C build
 
   rm -r $PKG/usr/share/{locale,gtk-3.0}
   rm $PKG/usr/bin/gtk-update-icon-cache
+  install -m 0644 -D $SRC/gtk.immodules $PKG/usr/lib/gtk-3.0/3.0.0/immodules.cache
+  install -m 0755 $SRC/gtk-register-3.sh $PKG/usr/bin/gtk-register-3
 }

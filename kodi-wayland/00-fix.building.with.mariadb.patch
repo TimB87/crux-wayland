@@ -1,0 +1,64 @@
+From cd20c8eb8a0394db1f028b118c4ca9b91b7e746a Mon Sep 17 00:00:00 2001
+From: wsnipex <wsnipex@a1.net>
+Date: Sun, 20 Jan 2019 08:51:38 +0100
+Subject: [PATCH] [cmake] fix building with mariadb on various linux distros
+
+---
+ cmake/modules/FindMariaDBClient.cmake | 5 ++++-
+ xbmc/dbwrappers/mysqldataset.cpp      | 6 +-----
+ xbmc/dbwrappers/mysqldataset.h        | 6 +-----
+ 3 files changed, 6 insertions(+), 11 deletions(-)
+
+diff --git a/cmake/modules/FindMariaDBClient.cmake b/cmake/modules/FindMariaDBClient.cmake
+index 7530ab5021dd..55328ccb0973 100644
+--- a/cmake/modules/FindMariaDBClient.cmake
++++ b/cmake/modules/FindMariaDBClient.cmake
+@@ -23,10 +23,13 @@ endif()
+ 
+ if(PKG_CONFIG_FOUND)
+   pkg_check_modules(PC_MARIADBCLIENT mariadb QUIET)
++  if(PC_MARIADBCLIENT_FOUND)
++    set(MARIADB_H_EXTRA_NAMES mysql.h mysql/mysql.h)
++  endif()
+ endif()
+ 
+ 
+-find_path(MARIADBCLIENT_INCLUDE_DIR NAMES mariadb/mysql.h mariadb/server/mysql.h
++find_path(MARIADBCLIENT_INCLUDE_DIR NAMES mariadb/mysql.h mariadb/server/mysql.h ${MARIADB_H_EXTRA_NAMES}
+                                            PATHS ${PC_MARIADBCLIENT_INCLUDEDIR})
+ find_library(MARIADBCLIENT_LIBRARY_RELEASE NAMES mariadbclient mariadb
+                                            PATHS ${PC_MARIADBCLIENT_LIBDIR}
+diff --git a/xbmc/dbwrappers/mysqldataset.cpp b/xbmc/dbwrappers/mysqldataset.cpp
+index 115f53ffe7b6..a013d6dc4324 100644
+--- a/xbmc/dbwrappers/mysqldataset.cpp
++++ b/xbmc/dbwrappers/mysqldataset.cpp
+@@ -17,11 +17,7 @@
+ #include "utils/StringUtils.h"
+ 
+ #include "mysqldataset.h"
+-#ifdef HAS_MYSQL
+-#include "mysql/errmsg.h"
+-#elif defined(HAS_MARIADB)
+-#include <mariadb/errmsg.h>
+-#endif
++#include "errmsg.h"
+ 
+ #ifdef TARGET_POSIX
+ #include "platform/linux/ConvUtils.h"
+diff --git a/xbmc/dbwrappers/mysqldataset.h b/xbmc/dbwrappers/mysqldataset.h
+index 793ad56ca3c3..3db799769e83 100644
+--- a/xbmc/dbwrappers/mysqldataset.h
++++ b/xbmc/dbwrappers/mysqldataset.h
+@@ -10,11 +10,7 @@
+ 
+ #include <stdio.h>
+ #include "dataset.h"
+-#ifdef HAS_MYSQL
+-#include "mysql/mysql.h"
+-#elif defined(HAS_MARIADB)
+-#include <mariadb/mysql.h>
+-#endif
++#include "mysql.h"
+ 
+ namespace dbiplus {
+ /***************** Class MysqlDatabase definition ******************

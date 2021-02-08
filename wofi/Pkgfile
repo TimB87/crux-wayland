@@ -4,13 +4,14 @@
 # Depends on: gtk3 wayland-protocols
 
 name=wofi
-version=1.1.2
+version=1.2.3
 release=1
 source=(https://hg.sr.ht/~scoopta/wofi/archive/v$version.tar.gz)
 
 build() {
-  cd $name-v$version
-  meson build --prefix=/usr
-  ninja -C build
-  DESTDIR=$PKG ninja -C build install
+  meson setup $name-v$version build \
+    --prefix=/usr \
+    --buildtype=plain
+  meson compile -C build
+  DESTDIR=$PKG meson install -C build
 }

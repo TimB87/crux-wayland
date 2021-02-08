@@ -1,0 +1,48 @@
+# Description: Mesa 3D Graphics Library
+# URL: https://www.mesa3d.org/
+# Maintainer: CRUX compat-32 Team, compat-32-ports at crux dot nu
+# Depends on: elfutils-32 expat-32 libdrm-32 libglvnd-32 libvdpau-32 llvm-32 xorg-libxdamage-32 xorg-libxshmfence-32 xorg-libxvmc-32 xorg-libxxf86vm-32 xorg-libxrandr-32 mesa
+# Optional: wayland-protocols-32
+
+name=mesa-32
+version=20.3.3
+release=1
+source=(https://mesa.freedesktop.org/archive/mesa-$version.tar.xz
+  x86-linux-gnu)
+
+build() {
+  # define PKGMK_MESA3D_USE_CLANG in /etc/pkgmk.conf
+  # PKGMK_MESA3D32_USE_CLANG="on"
+  # if you wish to build using clang instead of gcc
+  if [[ $PKGMK_MESA3D_USE_CLANG == on ]]; then
+    [[ -e /usr/bin/clang && -e /usr/bin/clang++ && /usr/bin/lld ]] && export CC=clang CXX=clang++ AR=llvm-ar NM=llvm-nm RANLIB=llvm-ranlib LDFLAGS+=' -fuse-ld=lld' || echo "Please install clang first"
+  fi
+
+  [[ -e '/usr/lib32/pkgconfig/wayland-protocols.pc' ]] && PKGMK_MESA_PLATFORMS+=',wayland'
+
+  meson setup mesa-$version build $PKGMK_MESA3D \
+    --cross-file=$SRC/x86-linux-gnu \
+    --prefix=/usr \
+    --libdir=/usr/lib32 \
+    --sysconfdir=/etc \
+    --buildtype=plain \
+    -D llvm=enabled \
+    -D shared-llvm=enabled \
+    -D gbm=enabled \
+    -D gles1=enabled \
+    -D gles2=enabled \
+    -D osmesa=gallium \
+    -D gallium-xa=enabled \
+    -D gallium-vdpau=enabled \
+    -D platforms=x11$PKGMK_MESA_PLATFORMS \
+    -D gallium-drivers=r300,r600,svga,swrast,radeonsi,nouveau \
+    -D vulkan-drivers=amd,intel \
+    -D glvnd=true
+  meson compile -C build
+  DESTDIR=$PKG meson install -C build
+
+  # indirect rendering symlink
+  ln -s libGLX_mesa.so.0 $PKG/usr/lib32/libGLX_indirect.so.0
+
+  rm -r $PKG/usr/{include,share/{drirc.d,glvnd}}
+}

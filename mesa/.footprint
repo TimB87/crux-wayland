@@ -16,10 +16,14 @@ drwxr-xr-x	root/root	usr/include/vulkan/
 drwxr-xr-x	root/root	usr/lib/
 drwxr-xr-x	root/root	usr/lib/dri/
 -rwxr-xr-x	root/root	usr/lib/dri/i915_dri.so
--rwxr-xr-x	root/root	usr/lib/dri/iris_dri.so
+-rwxr-xr-x	root/root	usr/lib/dri/i965_dri.so
 -rwxr-xr-x	root/root	usr/lib/dri/kms_swrast_dri.so
+-rwxr-xr-x	root/root	usr/lib/dri/nouveau_dri.so
+-rwxr-xr-x	root/root	usr/lib/dri/nouveau_vieux_dri.so
+-rwxr-xr-x	root/root	usr/lib/dri/r200_dri.so
 -rwxr-xr-x	root/root	usr/lib/dri/r300_dri.so
 -rwxr-xr-x	root/root	usr/lib/dri/r600_dri.so
+-rwxr-xr-x	root/root	usr/lib/dri/radeon_dri.so
 -rwxr-xr-x	root/root	usr/lib/dri/radeonsi_dri.so
 -rwxr-xr-x	root/root	usr/lib/dri/swrast_dri.so
 -rwxr-xr-x	root/root	usr/lib/dri/vmwgfx_dri.so
@@ -33,7 +37,14 @@ lrwxrwxrwx	root/root	usr/lib/libGLX_mesa.so.0 -> libGLX_mesa.so.0.0.0
 lrwxrwxrwx	root/root	usr/lib/libOSMesa.so -> libOSMesa.so.8
 lrwxrwxrwx	root/root	usr/lib/libOSMesa.so.8 -> libOSMesa.so.8.0.0
 -rwxr-xr-x	root/root	usr/lib/libOSMesa.so.8.0.0
--rwxr-xr-x	root/root	usr/lib/libXvMCr600.so
+lrwxrwxrwx	root/root	usr/lib/libXvMCnouveau.so -> libXvMCnouveau.so.1.0.0
+lrwxrwxrwx	root/root	usr/lib/libXvMCnouveau.so.1 -> libXvMCnouveau.so.1.0.0
+lrwxrwxrwx	root/root	usr/lib/libXvMCnouveau.so.1.0 -> libXvMCnouveau.so.1.0.0
+-rwxr-xr-x	root/root	usr/lib/libXvMCnouveau.so.1.0.0
+lrwxrwxrwx	root/root	usr/lib/libXvMCr600.so -> libXvMCr600.so.1.0.0
+lrwxrwxrwx	root/root	usr/lib/libXvMCr600.so.1 -> libXvMCr600.so.1.0.0
+lrwxrwxrwx	root/root	usr/lib/libXvMCr600.so.1.0 -> libXvMCr600.so.1.0.0
+-rwxr-xr-x	root/root	usr/lib/libXvMCr600.so.1.0.0
 lrwxrwxrwx	root/root	usr/lib/libgbm.so -> libgbm.so.1
 lrwxrwxrwx	root/root	usr/lib/libgbm.so.1 -> libgbm.so.1.0.0
 -rwxr-xr-x	root/root	usr/lib/libgbm.so.1.0.0
@@ -51,6 +62,10 @@ drwxr-xr-x	root/root	usr/lib/pkgconfig/
 -rw-r--r--	root/root	usr/lib/pkgconfig/osmesa.pc
 -rw-r--r--	root/root	usr/lib/pkgconfig/xatracker.pc
 drwxr-xr-x	root/root	usr/lib/vdpau/
+lrwxrwxrwx	root/root	usr/lib/vdpau/libvdpau_nouveau.so -> libvdpau_nouveau.so.1.0.0
+lrwxrwxrwx	root/root	usr/lib/vdpau/libvdpau_nouveau.so.1 -> libvdpau_nouveau.so.1.0.0
+lrwxrwxrwx	root/root	usr/lib/vdpau/libvdpau_nouveau.so.1.0 -> libvdpau_nouveau.so.1.0.0
+-rwxr-xr-x	root/root	usr/lib/vdpau/libvdpau_nouveau.so.1.0.0
 lrwxrwxrwx	root/root	usr/lib/vdpau/libvdpau_r300.so -> libvdpau_r300.so.1.0.0
 lrwxrwxrwx	root/root	usr/lib/vdpau/libvdpau_r300.so.1 -> libvdpau_r300.so.1.0.0
 lrwxrwxrwx	root/root	usr/lib/vdpau/libvdpau_r300.so.1.0 -> libvdpau_r300.so.1.0.0

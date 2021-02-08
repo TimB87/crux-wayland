@@ -1,9 +1,19 @@
-# crux-wayland
-an overlay to enable proper wayland use on CRUX 
+current sway setup
+==================
 
-# How To
-https://crux.nu/Main/Handbook3-5
+- start with greetd
+- custom `start-sway` command which holds some special variables 
+  ```bash
+  #!/bin/sh
+  export XDG_CURRENT_DESKTOP=sway
+  export XDG_SESSION_TYPE=wayland
+  export ELM_ACCEL=gl
+  export ELM_DISPLAY=wl
+  export GTK_THEME=Adapta-Nokto-Eta-Maia
+  export _JAVA_AWT_WM_NONREPARANTING=1
 
-If you come from X11, add this above opt/xorg, rebuild (mesa3d,libva,..), install sway, rebuild gtk3/qt5 for best experience.
-
-Make pull requests if something is missing or find me on irc to ask your questions.
+  #exec strace sway -d 2> /tmp/sway1.log
+  #exec sway -d -V 2> /tmp/sway1.log
+  #exec dbus-run-session -- sway -d -V 2> /tmp/sway.log
+  exec dbus-run-session -- sway
+  ```

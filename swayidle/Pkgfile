@@ -9,10 +9,10 @@ release=1
 source=(https://github.com/swaywm/swayidle/archive/$version/$name-$version.tar.gz)
 
 build() {
-  cd $name-$version
-  meson build --prefix=/usr \
+  meson setup $name-$version build \
+    --prefix=/usr \
     --buildtype=plain
-  ninja -C build
-  DESTDIR=$PKG ninja -C build install
+  meson compile -C build
+  DESTDIR=$PKG meson install -C build
   rm -r $PKG/usr/share/fish
 }

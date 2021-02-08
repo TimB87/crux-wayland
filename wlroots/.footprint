@@ -51,6 +51,7 @@ drwxr-xr-x	root/root	usr/include/wlr/types/
 -rw-r--r--	root/root	usr/include/wlr/types/wlr_input_method_v2.h
 -rw-r--r--	root/root	usr/include/wlr/types/wlr_keyboard.h
 -rw-r--r--	root/root	usr/include/wlr/types/wlr_keyboard_group.h
+-rw-r--r--	root/root	usr/include/wlr/types/wlr_keyboard_shortcuts_inhibit_v1.h
 -rw-r--r--	root/root	usr/include/wlr/types/wlr_layer_shell_v1.h
 -rw-r--r--	root/root	usr/include/wlr/types/wlr_linux_dmabuf_v1.h
 -rw-r--r--	root/root	usr/include/wlr/types/wlr_list.h
@@ -59,6 +60,7 @@ drwxr-xr-x	root/root	usr/include/wlr/types/
 -rw-r--r--	root/root	usr/include/wlr/types/wlr_output_damage.h
 -rw-r--r--	root/root	usr/include/wlr/types/wlr_output_layout.h
 -rw-r--r--	root/root	usr/include/wlr/types/wlr_output_management_v1.h
+-rw-r--r--	root/root	usr/include/wlr/types/wlr_output_power_management_v1.h
 -rw-r--r--	root/root	usr/include/wlr/types/wlr_pointer.h
 -rw-r--r--	root/root	usr/include/wlr/types/wlr_pointer_constraints_v1.h
 -rw-r--r--	root/root	usr/include/wlr/types/wlr_pointer_gestures_v1.h
@@ -77,13 +79,13 @@ drwxr-xr-x	root/root	usr/include/wlr/types/
 -rw-r--r--	root/root	usr/include/wlr/types/wlr_tablet_v2.h
 -rw-r--r--	root/root	usr/include/wlr/types/wlr_text_input_v3.h
 -rw-r--r--	root/root	usr/include/wlr/types/wlr_touch.h
+-rw-r--r--	root/root	usr/include/wlr/types/wlr_viewporter.h
 -rw-r--r--	root/root	usr/include/wlr/types/wlr_virtual_keyboard_v1.h
 -rw-r--r--	root/root	usr/include/wlr/types/wlr_virtual_pointer_v1.h
 -rw-r--r--	root/root	usr/include/wlr/types/wlr_xcursor_manager.h
 -rw-r--r--	root/root	usr/include/wlr/types/wlr_xdg_decoration_v1.h
 -rw-r--r--	root/root	usr/include/wlr/types/wlr_xdg_output_v1.h
 -rw-r--r--	root/root	usr/include/wlr/types/wlr_xdg_shell.h
--rw-r--r--	root/root	usr/include/wlr/types/wlr_xdg_shell_v6.h
 drwxr-xr-x	root/root	usr/include/wlr/util/
 -rw-r--r--	root/root	usr/include/wlr/util/edges.h
 -rw-r--r--	root/root	usr/include/wlr/util/log.h
@@ -92,8 +94,7 @@ drwxr-xr-x	root/root	usr/include/wlr/util/
 -rw-r--r--	root/root	usr/include/wlr/xcursor.h
 -rw-r--r--	root/root	usr/include/wlr/xwayland.h
 drwxr-xr-x	root/root	usr/lib/
-lrwxrwxrwx	root/root	usr/lib/libwlroots.so -> libwlroots.so.5
-lrwxrwxrwx	root/root	usr/lib/libwlroots.so.5 -> libwlroots.so.5.9.1
--rwxr-xr-x	root/root	usr/lib/libwlroots.so.5.9.1
+lrwxrwxrwx	root/root	usr/lib/libwlroots.so -> libwlroots.so.7
+-rwxr-xr-x	root/root	usr/lib/libwlroots.so.7
 drwxr-xr-x	root/root	usr/lib/pkgconfig/
 -rw-r--r--	root/root	usr/lib/pkgconfig/wlroots.pc

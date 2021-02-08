@@ -1,7 +1,7 @@
 # Description: The EGLStream-based Wayland external platform
 # URL: https://github.com/NVIDIA/egl-wayland/
 # Maintainer: Tim Biermann, tbier at posteo dot de
-# Depends on: eglexternalplatform mesa3d wayland-protocols
+# Depends on: eglexternalplatform mesa wayland-protocols
 
 name=wayland-egl
 version=1.1.4
@@ -10,9 +10,10 @@ source=(https://github.com/NVIDIA/egl-wayland/archive/$version/$name-$version.ta
   glvnd.diff)
 
 build() {
-  cd egl-wayland-$version
-  patch -Np1 -i $SRC/glvnd.diff
-  meson . build --prefix=/usr
-  ninja -C build
+  patch -Np1 -d egl-wayland-$version -i $SRC/glvnd.diff
+  meson setup egl-wayland-$version build \
+    --prefix=/usr \
+    --buildtype=plain
+  meson compile -C build
   DESTDIR=$PKG meson install -C build
 }

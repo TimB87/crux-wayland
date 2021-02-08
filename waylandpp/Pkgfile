@@ -4,14 +4,18 @@
 # Depends on: wayland-protocols pugixml wayland-egl
 
 name=waylandpp
-version=0.2.7
+version=0.2.8
 release=1
 source=(https://github.com/NilsBrause/waylandpp/archive/$version/$name-$version.zip)
 
 build() {
-  cd $name-$version
-  mkdir build && cd build
-  cmake -DCMAKE_INSTALL_PREFIX="/usr" -DCMAKE_INSTALL_LIBDIR="lib" ..
-  make
-  make DESTDIR=$PKG install
+  cmake -S $name-$version -B build -G Ninja \
+    -D CMAKE_INSTALL_PREFIX=/usr \
+    -D CMAKE_INSTALL_LIBDIR=lib \
+    -D CMAKE_BUILD_TYPE=Release \
+    -D CMAKE_CXX_FLAGS_RELEASE="$CXXFLAGS" \
+    -D CMAKE_C_FLAGS_RELEASE="$CFLAGS" \
+    -Wno-dev
+  cmake --build build
+  DESTDIR=$PKG cmake --install build
 }

@@ -4,19 +4,18 @@
 # Depends on: graphite2 json-c pango wlroots
 
 name=sway
-version=1.4
-release=1
-source=(https://github.com/swaywm/sway/archive/$version/$name-$version.tar.gz)
+version=1.5.1
+release=2
+_commit=62ec528c8cd6d2f7a
+source=(https://github.com/swaywm/sway/archive/$_commit/$name-$version.3.tar.gz)
 
 build() {
-  cd $name-$version
-  sed -i "s/branch \\\'@1@\\\'/CRUX/g" meson.build
-  meson build --prefix=/usr \
-    -Dwerror=false \
-    -Db_ndebug=true
-    # needs systemd or elogind..
-    #-Dtray=enabled \
-  ninja -C build
-  DESTDIR=$PKG ninja -C build install
-  chmod a+s $PKG/usr/bin/sway
+  #sed -i "s/branch \\\'@1@\\\'/CRUX/g" $name-$_commit/meson.build
+  meson setup $name-* build --prefix=/usr \
+    --buildtype=plain \
+    -D tray=enabled \
+    -D auto_features=enabled \
+    -D werror=false
+  meson compile -C build
+  DESTDIR=$PKG meson install -C build
 }

@@ -1,0 +1,5 @@
+#!/bin/sh
+
+getent group greeter || /usr/sbin/groupadd greeter
+getent passwd greeter || /usr/sbin/useradd -M -g greeter -G video,tty -c "greed user" greeter
+/usr/bin/passwd -l greeter

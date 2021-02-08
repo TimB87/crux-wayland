@@ -1,0 +1,97 @@
+# Description: A free and open source software media player and entertainment hub
+# URL: http://kodi.tv/
+# Maintainer: Tim Biermann, tbier at posteo dot de
+# Depends on: brotli crossguid flatbuffers fmt fstrcmp git glu graphite2 jsoncpp keyutils libass libbluray libcdio libgcrypt libmicrohttpd libpsl libssh libva openjdk8 openldap pulseaudio python rapidjson rtmpdump samba swig taglib tinyxml
+
+name=kodi
+version=18.9
+release=1
+
+_codename=Leia
+_ffmpeg_version="4.0.4-$_codename-18.4"
+_crossguid_version="8f399e8bd4"
+_fmt_version="5.1.0"
+_libdvdcss_version="1.4.2-$_codename-Beta-5"
+_libdvdnav_version="6.0.0-$_codename-Alpha-3"
+_libdvdread_version="6.0.0-$_codename-Alpha-3"
+
+source=(https://github.com/xbmc/xbmc/archive/$version-$_codename.tar.gz
+  https://github.com/xbmc/FFmpeg/archive/$_ffmpeg_version.tar.gz
+  http://mirrors.kodi.tv/build-deps/sources/crossguid-$_crossguid_version.tar.gz
+  http://mirrors.kodi.tv/build-deps/sources/fmt-$_fmt_version.tar.gz
+  https://github.com/xbmc/libdvdcss/archive/$_libdvdcss_version/$name-libdvdcss-$_libdvdcss_version.tar.gz
+  https://github.com/xbmc/libdvdnav/archive/$_libdvdnav_version/$name-libdvdnav-$_libdvdnav_version.tar.gz
+  https://github.com/xbmc/libdvdread/archive/$_libdvdread_version/$name-libdvdread-$_libdvdread_version.tar.gz
+  00-fix.building.with.mariadb.patch
+  GraphicContext.patch GUIDialogProfileSettings.patch)
+
+unpack_source() {
+  for file in ${source[@]}; do
+    case ${file##*/} in
+      $version-$_codename.tar.gz)
+        bsdtar -p -o -C $SRC -xf $(get_filename $file) ;;
+      *)
+        cp $(get_filename $file) $SRC ;;
+      esac
+    done
+}
+
+build() {
+  # define PKGMK_KODI_USE_CLANG in /etc/pkgmk.conf
+  # PKGMK_KODI_USE_CLANG="on"
+  # if you wish to build using clang instead of gcc
+  if [[ $PKGMK_KODI_USE_CLANG == on ]]; then
+    [[ -e /usr/bin/clang && -e /usr/bin/clang++ && -e /usr/bin/lld ]] && export CC=clang CXX=clang++ AR=llvm-ar NM=llvm-nm RANLIB=llvm-ranlib LDFLAGS+=' -fuse-ld=lld' || echo "Please install clang first"
+  fi
+
+  patch -Np1 -d xbmc-$version-$_codename -i ../00-fix.building.with.mariadb.patch
+  patch -Np1 -d xbmc-$version-$_codename -i ../GraphicContext.patch
+  patch -Np1 -d xbmc-$version-$_codename -i ../GUIDialogProfileSettings.patch
+
+  export PATH+=":/usr/lib/java/openjdk8/bin"
+
+  [ -e /usr/lib/pkgconfig/libpulse.pc ] && KODI_EXTRA+=' -DENABLE_PULSEAUDIO=ON'
+  [ -e /usr/include/bluetooth/bluetooth.h ] && KODI_EXTRA+=' -DENABLE_BLUETOOTH=ON'
+
+  # Acceleration APIs
+  [ -e /usr/lib/pkgconfig/libva.pc ] && KODI_EXTRA+=' -DENABLE_VAAPI=ON'
+  [ -e /usr/lib/pkgconfig/vdpau.pc ] && KODI_EXTRA+=' -DENABLE_VDPAU=ON'
+
+  # Zeroconf support
+  [ -e /usr/lib/pkgconfig/avahi-client.pc ] && KODI_EXTRA+=' -DENABLE_AVAHI=ON'
+
+  ## Support storing data in MySQL besides Sqlite3
+  [ -e /usr/lib/pkgconfig/mysqlclient.pc ] && KODI_EXTRA+=' -DENABLE_MYSQLCLIENT=OFF'
+  [ -e /usr/lib/pkgconfig/libmariadb.pc ] && KODI_EXTRA+=' -DENABLE_MARIADBCLIENT=OFF'
+
+  [[ -e /usr/lib/ccache ]] && PATH="$(echo ${PATH} | awk -v RS=: -v ORS=: '/ccache/ {next} {print}' | sed 's/:*$//')"
+
+  cmake -S xbmc-$version-$_codename -B build -G Ninja $KODI_EXTRA \
+    -D CMAKE_INSTALL_PREFIX=/usr \
+    -D CMAKE_BUILD_TYPE=Release \
+    -D CMAKE_CXX_FLAGS_RELEASE="$CXXFLAGS" \
+    -D CMAKE_C_FLAGS_RELEASE="$CFLAGS" \
+    -D CMAKE_INSTALL_LIBDIR=/usr/lib \
+    -D ENABLE_INTERNAL_FFMPEG=ON \
+    -D FFMPEG_URL="$SRC/$_ffmpeg_version.tar.gz" \
+    -D ENABLE_INTERNAL_CROSSGUID=ON \
+    -D CROSSGUID_URL="$SRC/crossguid-$_crossguid_version.tar.gz" \
+    -D libdvdcss_URL="$SRC/$name-libdvdcss-$_libdvdcss_version.tar.gz" \
+    -D libdvdnav_URL="$SRC/$name-libdvdnav-$_libdvdnav_version.tar.gz" \
+    -D libdvdread_URL="$SRC/$name-libdvdread-$_libdvdread_version.tar.gz" \
+    -D ENABLE_UDEV=ON \
+    -D ENABLE_DBUS=ON \
+    -D ENABLE_PYTHON=ON \
+    -D VERBOSE=OFF \
+    -D ENABLE_INTERNAL_FMT=OFF \
+    -D ENABLE_INTERNAL_FSTRCMP=OFF \
+    -D ENABLE_INTERNAL_FLATBUFFERS=OFF \
+    -Wno-dev
+    #-DENABLE_INTERNAL_FMT=ON \
+    #-DFMT_URL="$SRC/fmt-$_fmt_version.tar.gz" \
+  cmake --build build
+  DESTDIR=$PKG cmake --build build --target install
+
+  rm -r $PKG/usr/share/doc
+  find $PKG -name "README*" -delete
+}

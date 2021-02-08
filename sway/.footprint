@@ -1,11 +1,9 @@
 drwxr-xr-x	root/root	etc/
 drwxr-xr-x	root/root	etc/sway/
 -rw-r--r--	root/root	etc/sway/config
-drwxr-xr-x	root/root	etc/sway/security.d/
--rw-r--r--	root/root	etc/sway/security.d/00-defaults
 drwxr-xr-x	root/root	usr/
 drwxr-xr-x	root/root	usr/bin/
--rwsr-sr-x	root/root	usr/bin/sway
+-rwxr-xr-x	root/root	usr/bin/sway
 -rwxr-xr-x	root/root	usr/bin/swaybar
 -rwxr-xr-x	root/root	usr/bin/swaymsg
 -rwxr-xr-x	root/root	usr/bin/swaynag

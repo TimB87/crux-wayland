@@ -1,0 +1,10 @@
+--- GraphicContext.cpp	2020-01-12 09:54:55.259015295 +0100
++++ xbmc-leia_pi4_18.5-Leia/xbmc/windowing/GraphicContext.cpp	2020-01-12 09:50:54.991166231 +0100
+@@ -23,6 +23,7 @@
+ #include "guilib/GUIComponent.h"
+ #include "guilib/GUIWindowManager.h"
+ #include "guilib/TextureManager.h"
++#include <cassert>
+ 
+ using namespace KODI::MESSAGING;
+ 

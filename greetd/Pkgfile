@@ -1,0 +1,45 @@
+# Description: greetd is a minimal and flexible login manager daemon
+# URL: https://kl.wtf/projects/greetd/
+# Maintainer: Tim Biermann, tbier at posteo dot de
+# Depends on: rust
+
+name=greetd
+version=0.7.0
+release=1
+#source=(https://git.sr.ht/~kennylevinsen/greetd/archive/0.6.1/$name-$version.tar.gz)
+source=(https://git.sr.ht/~kennylevinsen/greetd/archive/$version.tar.gz
+  greetd.pam greetd.service)
+
+build() {
+  #cd $name-$version
+  cd $name-*
+  prt-get isinst sccache && export RUSTC_WRAPPER=/usr/bin/sccache
+  mkdir "$PKGMK_SOURCE_DIR/rust" || true
+  export CARGO_HOME="$PKGMK_SOURCE_DIR/rust"
+
+  cargo update
+  cargo fetch
+  cargo build --release --locked
+  install -Dt $PKG/usr/bin target/release/greetd
+  install -Dt $PKG/usr/bin target/release/agreety
+  install -Dt $PKG/etc/greetd config.toml
+
+  # install pam configuration
+  install -Dm644 $SRC/greetd.pam \
+    $PKG/etc/pam.d/greetd
+  # install service file
+  install -Dm 755 $SRC/greetd.service $PKG/etc/rc.d/greetd
+
+  ## needs scdoc
+  # install man files
+  #cd man
+  #for i in *scd; do
+  #  scdoc < "$i"> "$(basename "$i")".roff
+  #done
+  #for s in 1 5 7; do
+  #  install -d $PKG/usr/share/man/man$s
+  #  for i in *-$s.roff; do
+  #    install -m755 $i $PKG/usr/share/man/man$s/${i%-*}.$s
+  #  done
+  #done
+}

@@ -1,0 +1,17 @@
+# Description: Day/night gamma adjustments for Wayland
+# URL: https://sr.ht/~kennylevinsen/wlsunset/
+# Maintainer: Tim Biermann, tbier at posteo dot de
+# Depends on: meson ninja wayland-protocols
+
+name=wlsunset
+version=0.1.0
+release=1
+source=(https://git.sr.ht/~kennylevinsen/wlsunset/archive/0.1.0.tar.gz)
+
+build() {
+  meson setup $name-$version build \
+    --prefix=/usr \
+    --buildtype=plain
+  meson compile -C build
+  DESTDIR=$PKG meson install -C build
+}

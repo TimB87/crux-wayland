@@ -1,0 +1,15 @@
+# Description: Dynamic menu library and client program inspired by dmenu with support for wayland compositors
+# URL: https://github.com/Cloudef/bemenu/
+# Maintainer: Tim Biermann, tbier at posteo dot de
+# Depends on: pango wlroots xorg-libxkbcommon
+
+name=bemenu
+version=0.5.0
+release=1
+source=(https://github.com/Cloudef/bemenu/archive/$version/$name-$version.tar.gz)
+
+build() {
+  cd $name-$version
+  make
+  make PREFIX=$PKG/usr install
+}

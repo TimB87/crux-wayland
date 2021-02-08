@@ -5,15 +5,16 @@
 
 name=mako
 version=1.4.1
-release=1
-source=(https://github.com/emersion/mako/archive/v$version/$name-$version.tar.gz
+release=2
+_commit=08d6f60b616f813e6ea9af7328838b6a3b04ad6d
+source=(https://github.com/emersion/mako/archive/$_commit/$name-$version-1.tar.gz
   92.patch)
 
 build() {
-  cd $name-$version
   #patch -Np1 -i $SRC/92.patch
-  meson build --prefix=/usr \
-    -DHAVE_SYSTEMD=0 -DHAVE_ELOGIND=0
-  ninja -C build
-  DESTDIR=$PKG ninja -C build install
+  meson $name-$_commit build \
+    --prefix=/usr \
+    --buildtype=plain
+  meson compile -C build
+  DESTDIR=$PKG meson install -C build
 }
