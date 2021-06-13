@@ -1,15 +1,20 @@
 my current sway setup
 ==================
-My rough setup:
+# rough setup:
+## main testing device
  - old (2013) Acer notebook using i915 mesa driver
  - running sway (wlroots-based) as a wayland compositor
-    - xwayland
+    - `xwayland disabled`
  - greetd with tuigreet
  - seatd
  - basu (sdbus compat library and userspace handler)
  - pipewire-pulse
  - rofi, mako, i3statusbar-rust
  - am i forgetting something..?
+## desktop
+ - old i5 with amdgpu (RX580)
+ - sway with `xwayland enabled`
+ - same software otherwise
 
 # Preperation
 Some steps when you switch from any X11 WM/DM:
