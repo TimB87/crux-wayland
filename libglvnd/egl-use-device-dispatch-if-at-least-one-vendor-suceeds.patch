@@ -1,0 +1,37 @@
+From a527411da713b2068974c46d7129326520dc5923 Mon Sep 17 00:00:00 2001
+From: Ronan Pigott <rpigott@berkeley.edu>
+Date: Wed, 18 Nov 2020 11:05:59 -0700
+Subject: [PATCH] egl: use device dispatch if at least one vendor suceeds
+
+Currently, in InitDeviceListInternal if any egl vendor fails to list
+its devices for any reason the construction of the device list is
+abandoned. That means that even if we have one vendor successfully
+serving the application, the failure of another vendor library will
+break any api calls related to egl devices.
+
+Instead, if a vendor fails queryDevicesEXT the device mapping logic
+should proceed as if it listed no devices. If the relevant device
+belongs to the failed vendor then the dispatch will still fail with
+EGL_BAD_DEVICE.
+---
+ src/EGL/libeglmapping.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/src/EGL/libeglmapping.c b/src/EGL/libeglmapping.c
+index c736172..7cf5a87 100644
+--- a/src/EGL/libeglmapping.c
++++ b/src/EGL/libeglmapping.c
+@@ -276,7 +276,9 @@ static EGLBoolean AddVendorDevices(__EGLvendorInfo *vendor)
+     }
+ 
+     if (!vendor->staticDispatch.queryDevicesEXT(0, NULL, &count)) {
+-        return EGL_FALSE;
++        // Even if this vendor fails, we can still return the devices from any
++        // other vendors
++        return EGL_TRUE;
+     }
+     if (count <= 0) {
+         return EGL_TRUE;
+-- 
+GitLab
+

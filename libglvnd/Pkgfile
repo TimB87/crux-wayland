@@ -1,0 +1,47 @@
+# Description: The GL Vendor-Neutral Dispatch library
+# URL: https://github.com/NVIDIA/libglvnd
+# Maintainer: CRUX Xorg Team, xorg-ports at crux dot nu
+# Depends on: xorg-libx11 xorg-libxau xorg-libxcb xorg-libxdmcp xorg-libxext
+# Optional: xorg-libx11 xorg-libxext xorg-server xorg-xorgproto
+
+name=libglvnd
+version=1.3.3
+release=1
+source=(https://github.com/NVIDIA/$name/archive/v$version/$name-$version.tar.gz
+  eglplatform.h
+  # fedora rawhide patches
+  0001-glx-Add-another-fallback-library-name.patch
+  egl-use-device-dispatch-if-at-least-one-vendor-suceeds.patch
+  libglvnd-python3.patch)
+
+build() {
+  #prt-get isinst xorg-server && PKGMK_GLVND+=' -D x11=enabled' || PKGMK_GLVND+=' -D x11=disabled'
+
+  patch -Np1 -d $name-$version -i $SRC/0001-glx-Add-another-fallback-library-name.patch
+  #patch -Np1 -d $name-$version -i $SRC/egl-use-device-dispatch-if-at-least-one-vendor-suceeds.patch
+  patch -Np1 -d $name-$version -i $SRC/libglvnd-python3.patch
+
+  #meson setup $name-$version build $PKGMK_GLVND \
+  # --prefix=/usr \
+  #  --buildtype=plain \
+  #  -D gles1=false \
+  #  -D egl=true \
+  #  -D tls=disabled \
+  #  -D glx=true
+  #meson compile -C build
+  #DESTDIR=$PKG meson install -C build
+
+  #prt-get isinst xorg-server || PKGMK_GLVND+=' --disable-x11'
+
+  cd $name-$version
+
+  autoreconf -if
+  ./configure $PKGMK_GLVND \
+    --prefix=/usr \
+    --disable-gles1
+  make
+  make DESTDIR=$PKG install
+
+  # replace EGL/eglplatform.h with the newer mesa version
+  install -m 0644 $SRC/eglplatform.h $PKG/usr/include/EGL/
+}
