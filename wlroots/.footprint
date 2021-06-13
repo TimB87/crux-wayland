@@ -84,6 +84,9 @@ drwxr-xr-x	root/root	usr/include/wlr/types/
 -rw-r--r--	root/root	usr/include/wlr/types/wlr_virtual_pointer_v1.h
 -rw-r--r--	root/root	usr/include/wlr/types/wlr_xcursor_manager.h
 -rw-r--r--	root/root	usr/include/wlr/types/wlr_xdg_decoration_v1.h
+-rw-r--r--	root/root	usr/include/wlr/types/wlr_xdg_foreign_registry.h
+-rw-r--r--	root/root	usr/include/wlr/types/wlr_xdg_foreign_v1.h
+-rw-r--r--	root/root	usr/include/wlr/types/wlr_xdg_foreign_v2.h
 -rw-r--r--	root/root	usr/include/wlr/types/wlr_xdg_output_v1.h
 -rw-r--r--	root/root	usr/include/wlr/types/wlr_xdg_shell.h
 drwxr-xr-x	root/root	usr/include/wlr/util/
@@ -92,9 +95,8 @@ drwxr-xr-x	root/root	usr/include/wlr/util/
 -rw-r--r--	root/root	usr/include/wlr/util/region.h
 -rw-r--r--	root/root	usr/include/wlr/version.h
 -rw-r--r--	root/root	usr/include/wlr/xcursor.h
--rw-r--r--	root/root	usr/include/wlr/xwayland.h
 drwxr-xr-x	root/root	usr/lib/
-lrwxrwxrwx	root/root	usr/lib/libwlroots.so -> libwlroots.so.7
--rwxr-xr-x	root/root	usr/lib/libwlroots.so.7
+lrwxrwxrwx	root/root	usr/lib/libwlroots.so -> libwlroots.so.8
+-rwxr-xr-x	root/root	usr/lib/libwlroots.so.8
 drwxr-xr-x	root/root	usr/lib/pkgconfig/
 -rw-r--r--	root/root	usr/lib/pkgconfig/wlroots.pc

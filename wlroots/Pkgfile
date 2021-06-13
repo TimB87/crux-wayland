@@ -1,24 +1,25 @@
 # Description: A modular Wayland compositor library.
 # URL: https://github.com/swaywm/wlroots
 # Maintainer: Tim Biermann, tbier at posteo dot de
-# Depends on: libcap libinput libxkbcommon mesa wayland-protocols xorg-libpixman xorg-libxcomposite xorg-xcb-util-error xorg-xcb-util-image xorg-xcb-util-wm xorg-xinput seatd
+# Depends on: libcap libinput libxkbcommon mesa seatd wayland-protocols xorg-libpixman xorg-libxcomposite xorg-xcb-util-error xorg-xcb-util-image xorg-xcb-util-wm xorg-xinput
+# Optional: xorg-server
 
 name=wlroots
-version=0.12.0
-release=3
-_commit=7c995b78b2f74a0a2
-#source=(https://github.com/swaywm/wlroots/archive/$version/$name-$version.tar.gz)
-source=(https://github.com/swaywm/wlroots/archive/$_commit/$name-$version.2.tar.gz)
+version=0.13.0
+release=1
+_commit=7709a965e596f66efabaf6c22967adbac0bbddb2
+source=(https://github.com/swaywm/wlroots/archive/$version/$name-$version.tar.gz)
+#source=(https://github.com/swaywm/wlroots/archive/$_commit/$name-$version.$release.tar.gz)
 
 build() {
-  #meson setup $name-$version build \
-  meson setup $name-* build \
+  #meson setup $name-$_commit build \
+  # use xwayland support in case that xorg-server was compiled with wayland around
+  [[ -e /usr/bin/Xwayland ]] && PKGMK_WLROOTS+=' -D xwayland=enabled' || PKGMK_WLROOTS+=' -D xwayland=disabled'
+  meson setup $name-$version build $PKGMK_WLROOTS \
     --prefix=/usr \
     --buildtype=plain \
-    -D auto_features=enabled \
     -D xcb-errors=enabled \
     -D xcb-icccm=enabled \
-    -D xwayland=enabled \
     -D libseat=enabled \
     -D x11-backend=enabled
   meson compile -C build
