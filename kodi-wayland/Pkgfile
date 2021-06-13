@@ -4,18 +4,18 @@
 # Depends on: kodi waylandpp wayland-protocols libxkbcommon
 
 name=kodi-wayland
-version=18.9
+version=19.1
 release=1
 
-_codename=Leia
-_ffmpeg_version="4.0.4-$_codename-18.4"
-_fmt_version="5.1.0"
+_codename=Matrix
+_ffmpeg_version="4.3.1-$_codename-Beta1"
 _crossguid_version="8f399e8bd4"
-_libdvdcss_version="1.4.2-$_codename-Beta-5"
-_libdvdnav_version="6.0.0-$_codename-Alpha-3"
-_libdvdread_version="6.0.0-$_codename-Alpha-3"
+_fmt_version="5.1.0"
+_libdvdcss_version="1.4.2-Leia-Beta-5"
+_libdvdnav_version="6.0.0-Leia-Alpha-3"
+_libdvdread_version="6.0.0-Leia-Alpha-3"
 
-source=(https://github.com/xbmc/xbmc/archive/$version-$_codename.tar.gz
+source=(https://github.com/xbmc/xbmc/archive/refs/tags/v$version.tar.gz
   https://github.com/xbmc/FFmpeg/archive/$_ffmpeg_version.tar.gz
   http://mirrors.kodi.tv/build-deps/sources/fmt-$_fmt_version.tar.gz
   http://mirrors.kodi.tv/build-deps/sources/crossguid-$_crossguid_version.tar.gz
@@ -28,7 +28,8 @@ source=(https://github.com/xbmc/xbmc/archive/$version-$_codename.tar.gz
 unpack_source() {
   for file in ${source[@]}; do
     case ${file##*/} in
-      $version-$_codename.tar.gz)
+      $version-$_codename.tar.gz|\
+      v$version.tar.gz)
         bsdtar -p -o -C $SRC -xf $(get_filename $file) ;;
       *)
         cp $(get_filename $file) $SRC ;;
@@ -44,18 +45,14 @@ build()  {
     [[ -e /usr/bin/clang && -e /usr/bin/clang++ && -e /usr/bin/lld ]] && export CC=clang CXX=clang++ AR=llvm-ar NM=llvm-nm RANLIB=llvm-ranlib LDFLAGS+=' -fuse-ld=lld' || echo "Please install clang first"
   fi
 
-  patch -Np1 -d xbmc-$version-$_codename -i ../00-fix.building.with.mariadb.patch
-  patch -Np1 -d xbmc-$version-$_codename -i ../GraphicContext.patch
-  patch -Np1 -d xbmc-$version-$_codename -i ../GUIDialogProfileSettings.patch
-
   export PATH="/usr/lib/java/openjdk8/bin:/bin:/usr/bin:/sbin:/usr/sbin:/usr/local/bin"
 
-  [ -r /usr/lib/pkgconfig/libpulse.pc ] && KODI_EXTRA+=' -DENABLE_PULSEAUDIO=ON'
-  [ -r /usr/include/bluetooth/bluetooth.h ] && KODI_EXTRA+=' -DENABLE_BLUETOOTH=ON'
+  [ -e /usr/lib/pkgconfig/libpulse.pc ] || KODI_EXTRA+=' -D ENABLE_PULSEAUDIO=OFF'
+  [ -e /usr/include/bluetooth/bluetooth.h ] && KODI_EXTRA+=' -D ENABLE_BLUETOOTH=ON'
 
   # Acceleration APIs
-  [ -r /usr/lib/pkgconfig/libva.pc ] && KODI_EXTRA+=' -DENABLE_VAAPI=ON'
-  [ -r /usr/lib/pkgconfig/vdpau.pc ] && KODI_EXTRA+=' -DENABLE_VDPAU=ON'
+  [ -e /usr/lib/pkgconfig/libva.pc ] || KODI_EXTRA+=' -D ENABLE_VAAPI=OFF'
+  [ -e /usr/lib/pkgconfig/vdpau.pc ] && KODI_EXTRA+=' -D ENABLE_VDPAU=ON'
 
   # Zeroconf support
   [ -r /usr/lib/pkgconfig/avahi-client.pc ] && KODI_EXTRA+=' -DENABLE_AVAHI=ON'
@@ -66,14 +63,15 @@ build()  {
 
   [[ -e /usr/lib/ccache ]] && PATH="$(echo ${PATH} | awk -v RS=: -v ORS=: '/ccache/ {next} {print}' | sed 's/:*$//')"
 
-  cmake -S xbmc-$version-$_codename -B build -G Ninja $KODI_EXTRA \
+  #cmake -S xbmc-$version-$_codename -B build -G Ninja $KODI_EXTRA \
+  cmake -S xbmc-$version -B build -G Ninja $KODI_EXTRA \
     -D CMAKE_INSTALL_PREFIX=/usr \
     -D CMAKE_BUILD_TYPE=Release \
     -D CMAKE_CXX_FLAGS_RELEASE="$CXXFLAGS" \
     -D CMAKE_C_FLAGS_RELEASE="$CFLAGS" \
     -D CMAKE_INSTALL_LIBDIR=/usr/lib \
     -D CORE_PLATFORM_NAME=wayland \
-    -D WAYLAND_RENDER_SYSTEM=gl \
+    -D APP_RENDER_SYSTEM=gl \
     -D ENABLE_INTERNAL_FFMPEG=ON \
     -D FFMPEG_URL="$SRC/$_ffmpeg_version.tar.gz" \
     -D ENABLE_INTERNAL_CROSSGUID=ON \
@@ -86,8 +84,10 @@ build()  {
     -D ENABLE_INTERNAL_FLATBUFFERS=OFF \
     -D ENABLE_UDEV=ON \
     -D ENABLE_DBUS=ON \
-    -D ENABLE_OPTICAL=OFF \
     -D ENABLE_PYTHON=ON \
+    -D ENABLE_OPTICAL=OFF \
+    -D ENABLE_INTERNAL_GTEST=OFF \
+    -D ENABLE_TESTING=OFF \
     -D VERBOSE=OFF \
     -Wno-dev
     #-DFMT_URL="$SRC/fmt-$_fmt_version.tar.gz" \
