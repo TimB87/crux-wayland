@@ -9,7 +9,7 @@
 # Downloading date patch from https://github.com/mesonbuild/hinnant-date/releases/download/3.0.0-1/hinnant-date.zip
 
 name=waybar
-version=0.9.5
+version=0.9.7
 release=1
 source=(https://github.com/Alexays/Waybar/archive/$version/$name-$version.tar.gz)
 
