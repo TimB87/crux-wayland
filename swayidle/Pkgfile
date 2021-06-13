@@ -1,17 +1,22 @@
 # Description: Idle management daemon for Wayland
 # URL: https://github.com/swaywm/swayidle
 # Maintainer: Tim Biermann, tbier at posteo dot de
-# Depends on: wayland-protocols
+# Depends on: basu wayland-protocols
 
 name=swayidle
 version=1.6
-release=1
-source=(https://github.com/swaywm/swayidle/archive/$version/$name-$version.tar.gz)
+release=2
+source=(https://github.com/swaywm/swayidle/archive/$version/$name-$version.tar.gz
+  89.patch)
+git=(https://github.com/swaywm/swayidle.git)
 
 build() {
-  meson setup $name-$version build \
+  git clone $git $name
+  patch -Np1 -d $name -i $SRC/89.patch
+  meson setup $name build \
     --prefix=/usr \
-    --buildtype=plain
+    --buildtype=plain \
+    -D sd-bus-provider=basu
   meson compile -C build
   DESTDIR=$PKG meson install -C build
   rm -r $PKG/usr/share/fish
