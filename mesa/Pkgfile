@@ -1,45 +1,44 @@
 # Description: Mesa 3D Graphics Library
 # URL: https://www.mesa3d.org
 # Maintainer: Tim Biermann, tbier at posteo dot de
-# Depends on: elfutils libdrm libglvnd libvdpau llvm python3-mako xorg-libxdamage xorg-libxrandr xorg-libxshmfence xorg-libxvmc xorg-libxxf86vm
-# Optional: wayland-protocols
+# Depends on: elfutils libdrm libglvnd libvdpau llvm python3-mako
+# Optional: wayland-protocols xorg-libxdamage xorg-libxrandr xorg-libxshmfence xorg-libxvmc xorg-libxxf86vm
 
 name=mesa
-version=20.3.3
+version=21.1.2
 release=1
 source=(https://mesa.freedesktop.org/archive/mesa-$version.tar.xz)
 
 build() {
   # define PKGMK_MESA3D_USE_CLANG in /etc/pkgmk.conf
-  # PKGMK_MESA3D_USE_CLANG="on"
-  # if you wish to build using clang instead of gcc
-  if [[ $PKGMK_MESA3D_USE_CLANG == on ]]; then
-    [[ -e /usr/bin/clang && -e /usr/bin/clang++ && /usr/bin/lld ]] && export CC=clang CXX=clang++ AR=llvm-ar NM=llvm-nm RANLIB=llvm-ranlib LDFLAGS+=' -fuse-ld=lld' || echo "Please install clang first"
-  fi
+  [[ $PKGMK_MESA_USE_CLANG == on ]] && \
+    [[ -e /usr/bin/clang && -e /usr/bin/clang++ && /usr/bin/lld ]] && export CC=clang CXX=clang++ AR=llvm-ar NM=llvm-nm RANLIB=llvm-ranlib LDFLAGS+=' -fuse-ld=lld' || printf '\e[1;31m%-6s\e[m\n' "You don't have clang and/or lld installed"
 
-  [[ -e '/usr/lib/pkgconfig/wayland-protocols.pc' ]] && PKGMK_MESA_PLATFORMS+=',wayland'
+  prt-get isinst glslang && PKGMK_MESA+=' -D vulkan-overlay-layer=true -D vulkan-device-select-layer=true -D vulkan-layers=device-select,intel-nullhw,overlay'
+  prt-get isinst wayland-protocols && PKGMK_MESA_PLATFORMS+='wayland'
+  prt-get isinst xorg-libxdamage xorg-libxrandr xorg-libxshmfence xorg-libxvmc xorg-libxxf86vm && PKGMK_MESA_PLATFORMS+=',x11'
 
-  meson setup mesa-$version build $PKGMK_MESA3D \
+  meson setup mesa-$version build $PKGMK_MESA \
     --prefix=/usr \
     --sysconfdir=/etc \
     --buildtype=plain \
     -D llvm=enabled \
-    -D platforms=x11$PKGMK_MESA_PLATFORMS \
-    -D shared-glapi=enabled \
     -D shared-llvm=enabled \
-    -D osmesa=gallium \
+    -D platforms=${PKGMK_MESA_PLATFORMS#,} \
+    -D osmesa=true \
     -D gallium-drivers=r300,r600,svga,swrast,radeonsi,nouveau \
-    -D vulkan-drivers=amd,intel \
-    -D dri3=enabled \
-    -D gallium-xa=enabled \
     -D gallium-vdpau=enabled \
+    -D gallium-xa=enabled \
+    -D vulkan-drivers=amd,intel \
+    -D dri-drivers=i915,i965,r100,r200,nouveau \
+    -D dri3=enabled \
     -D gbm=enabled \
-    -D gles1=enabled \
+    -D gles1=disabled \
     -D gles2=enabled \
     -D glvnd=true \
-    -D glx=dri
-    # needs libclc
-    #-Dgallium-opencl=icd \
+    -D glx=dri \
+    -D shared-glapi=enabled \
+    -D egl=enabled
 
   meson compile -C build
   DESTDIR=$PKG meson install -C build
