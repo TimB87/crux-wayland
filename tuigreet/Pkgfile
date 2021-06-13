@@ -4,7 +4,7 @@
 # Depends on: greetd
 
 name=tuigreet
-version=0.2.0
+version=0.4.0
 release=1
 source=(https://github.com/apognu/tuigreet/archive/$version/$name-$version.tar.gz)
 
