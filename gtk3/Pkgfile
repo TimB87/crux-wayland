@@ -5,8 +5,8 @@
 # Optional: cups colord wayland
 
 name=gtk3
-version=3.24.24
-release=2
+version=3.24.29
+release=1
 source=(https://download.gnome.org/sources/gtk+/${version:0:4}/gtk+-$version.tar.xz
   gtk-register-3.sh gtk.immodules)
 
@@ -29,7 +29,6 @@ build () {
   DESTDIR=$PKG meson install -C build
 
   rm -r $PKG/usr/share/{locale,gtk-3.0}
-  rm $PKG/usr/bin/gtk-update-icon-cache
   install -m 0644 -D $SRC/gtk.immodules $PKG/usr/lib/gtk-3.0/3.0.0/immodules.cache
   install -m 0755 $SRC/gtk-register-3.sh $PKG/usr/bin/gtk-register-3
 }
