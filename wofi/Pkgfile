@@ -4,7 +4,7 @@
 # Depends on: gtk3 wayland-protocols
 
 name=wofi
-version=1.2.3
+version=1.2.4
 release=1
 source=(https://hg.sr.ht/~scoopta/wofi/archive/v$version.tar.gz)
 
