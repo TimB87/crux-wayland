@@ -4,9 +4,9 @@
 # Depends on: wayland-protocol xorg-libxkbcommon cairo gdk-pixbuf wlroots imagemagick grim
 
 name=swaylock-fancy
-version=20020501
+version=20200706
 release=1
-_commit=f44b08fb984393bd0851cea27117661a7bc81c2f
+_commit=4c328a0a9fd9885b449081a214c78bee6089da80
 source=(https://github.com/Big-B/swaylock-fancy/archive/$_commit/$name-$version.tar.gz)
 
 build() {
